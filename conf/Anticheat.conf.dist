@@ -94,7 +94,7 @@ Anticheat.LoginMessage = 0
 #       Default:    0 - (Disabled)
 #                   1 - (Enabled)
 
-Anticheat.WriteLog = 0
+Anticheat.WriteLog = 1
 
 #     Anticheat.SaveReportsTime
 #       Description: Set the time between each report save in seconds
@@ -224,7 +224,7 @@ Anticheat.CM.TIMEMANIPULATION = 1
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.Teleport = 0
+Anticheat.CM.Teleport = 1
 
 #
 #     Anticheat.CM.FLYHACK
@@ -235,7 +235,7 @@ Anticheat.CM.Teleport = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.FLYHACK = 0
+Anticheat.CM.FLYHACK = 1
 
 #
 #     Anticheat.CM.JUMPHACK
@@ -246,8 +246,8 @@ Anticheat.CM.FLYHACK = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.JUMPHACK = 0
-Anticheat.CM.ADVJUMPHACK = 0
+Anticheat.CM.JUMPHACK = 1
+Anticheat.CM.ADVJUMPHACK = 1
 
 #
 #     Anticheat.CM.IGNOREZ
@@ -258,7 +258,7 @@ Anticheat.CM.ADVJUMPHACK = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.IGNOREZ = 0
+Anticheat.CM.IGNOREZ = 1
 
 #
 #     Anticheat.CM.SPEEDHACK
@@ -268,7 +268,7 @@ Anticheat.CM.IGNOREZ = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.SPEEDHACK = 0
+Anticheat.CM.SPEEDHACK = 1
 
 #
 #     Anticheat.BG.StartAreaTeleport
@@ -279,7 +279,7 @@ Anticheat.CM.SPEEDHACK = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.BG.StartAreaTeleport = 0
+Anticheat.BG.StartAreaTeleport = 1
 
 #
 #     Anticheat.CM.WriteLog
@@ -289,7 +289,7 @@ Anticheat.BG.StartAreaTeleport = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.WriteLog = 0
+Anticheat.CM.WriteLog = 1
 
 #
 #     Anticheat.CM.ALERTSCREEN
@@ -299,7 +299,7 @@ Anticheat.CM.WriteLog = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.ALERTSCREEN = 0
+Anticheat.CM.ALERTSCREEN = 1
 
 #
 #     Anticheat.CM.ALERTCHAT
@@ -309,7 +309,7 @@ Anticheat.CM.ALERTSCREEN = 0
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.ALERTCHAT= 0
+Anticheat.CM.ALERTCHAT= 1
 
 #
 ###################################################################################################
