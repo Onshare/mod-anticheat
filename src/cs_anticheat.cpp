@@ -96,7 +96,7 @@ public:
         if (!player)
             return false;
 
-        ChatHandler(player->GetConnectedPlayer()->GetSession()).SendSysMessage("The anticheat system has reported several times that you may be cheating. You will be monitored to confirm if this is accurate.");
+        ChatHandler(player->GetConnectedPlayer()->GetSession()).SendSysMessage("反作弊系统多次报告您可能存在作弊行为。您将被监测以确认其准确性。");
         return true;
     }
 
@@ -183,7 +183,7 @@ public:
             return false;
 
         sAnticheatMgr->AnticheatDeleteCommand(player->GetGUID());
-        handler->PSendSysMessage("Anticheat players_reports_status deleted for player %s", player->GetName());
+        handler->PSendSysMessage("反作弊玩家报告状态已删除，适用于玩家 %s", player->GetName());
         return true;
     }
 
@@ -211,25 +211,25 @@ public:
             const char* averageTotalTemplate;
             if (handler->IsConsole())
             {
-                counterMeasureTemplate = "Counter Measures Deployed: %u";
-                lineTemplate_u = "%s Reports: %u";
+                counterMeasureTemplate = "反作弊措施已部署: %u";
+                lineTemplate_u = "%s 举报: %u";
                 lineTemplate_s = "%s: %s";
                 lineSeparator = "-----------------------------------------------------------------";
-                playerInformationTemplate = "Information about player %s";
-                ipAndLatencyTemplate = "IP Address: %s || Latency %u ms";
-                banAndReasonTemplate = "Ban by: %s || Ban Reason: %s";
-                averageTotalTemplate = "Average: %f || Total Reports: %u";
+                playerInformationTemplate = "玩家信息 %s";
+                ipAndLatencyTemplate = "IP 地址: %s || 延迟 %u ms";
+                banAndReasonTemplate = "封禁人: %s || 封禁原因: %s";
+                averageTotalTemplate = "平均数: %f || 总举报数: %u";
             }
             else
             {
-                counterMeasureTemplate = "|cffff0000Counter Measures Deployed:|cffffff00 %u";
-                lineTemplate_u = "|cffff0000%s Reports:|cffffff00 %u";
+                counterMeasureTemplate = "|cffff0000反作弊措施已部署:|cffffff00 %u";
+                lineTemplate_u = "|cffff0000%s 举报:|cffffff00 %u";
                 lineTemplate_s = "|cffff0000%s:|cffffff00 %s";
                 lineSeparator = "|cFFFFA500-----------------------------------------------------------------";
-                playerInformationTemplate = "|cFF20B2AAInformation about player:|cffffff00 %s";
-                ipAndLatencyTemplate = "|cffff0000IP Address: |cffffff00%s |cffff0000Latency |cffffff00%u ms";
-                banAndReasonTemplate = "|cffff0000Ban by:|cffffff00 %s |cffff0000Ban Reason:|cffffff00 %s";
-                averageTotalTemplate = "|cffff0000Average: |cffffff00%f |cffff0000Total Reports:|cffffff00 %u";
+                playerInformationTemplate = "|cFF20B2AA玩家信息:|cffffff00 %s";
+                ipAndLatencyTemplate = "|cffff0000IP 地址: |cffffff00%s |cffff0000延迟 |cffffff00%u ms";
+                banAndReasonTemplate = "|cffff0000封禁人:|cffffff00 %s |cffff0000封禁原因:|cffffff00 %s";
+                averageTotalTemplate = "|cffff0000平均数: |cffffff00%f |cffff0000总举报数:|cffffff00 %u";
             }
 
             handler->PSendSysMessage(lineSeparator);
@@ -246,14 +246,14 @@ public:
                     std::string startbanEnd = Acore::Time::TimeToTimestampStr(Seconds(fields[0].Get<uint64>()));
                     std::string bannedReason = fields[1].Get<std::string>();
                     std::string bannedBy = fields[2].Get<std::string>();
-                    handler->PSendSysMessage(lineTemplate_s, "Account Previously Banned", "Yes");
-                    handler->PSendSysMessage(lineTemplate_s, "Ban Ended", startbanEnd);
+                    handler->PSendSysMessage(lineTemplate_s, "账户曾被封禁", "Yes");
+                    handler->PSendSysMessage(lineTemplate_s, "封禁结束", startbanEnd);
                     handler->PSendSysMessage(banAndReasonTemplate, bannedBy, bannedReason);
                 } while (resultADB->NextRow());
             }
             else
             {
-                handler->PSendSysMessage(lineTemplate_s, "Account Previously Banned", "No");
+                handler->PSendSysMessage(lineTemplate_s, "账户曾被封禁", "No");
             }
 
             //                                                           0            1           2
@@ -266,24 +266,24 @@ public:
                     std::string startbanEnd = Acore::Time::TimeToTimestampStr(Seconds(fields[0].Get<uint64>()));
                     std::string bannedReason = fields[1].Get<std::string>();
                     std::string bannedBy = fields[2].Get<std::string>();
-                    handler->PSendSysMessage(lineTemplate_s, "Character Previously Banned", "Yes");
-                    handler->PSendSysMessage(lineTemplate_s, "Ban Ended", startbanEnd);
+                    handler->PSendSysMessage(lineTemplate_s, "角色曾被封禁", "Yes");
+                    handler->PSendSysMessage(lineTemplate_s, "封禁结束", startbanEnd);
                     handler->PSendSysMessage(banAndReasonTemplate, bannedBy, bannedReason);
                 } while (resultCDB->NextRow());
             }
             else
             {
-                handler->PSendSysMessage(lineTemplate_s, "Character Previously Banned", "No");
+                handler->PSendSysMessage(lineTemplate_s, "角色曾被封禁", "No");
             }
 
             // If any row exists, then we consider "detected".
             if (CharacterDatabase.Query("SELECT TRUE FROM `account_data` WHERE `data` LIKE '%CastSpellByName%' AND `accountId` = {};", playerTarget->GetSession()->GetAccountId()))
             {
-                handler->PSendSysMessage(lineTemplate_s, "Macro Requiring Lua Unlock Detected", "Yes");
+                handler->PSendSysMessage(lineTemplate_s, "检测到需要 Lua 解锁的宏操作", "Yes");
             }
             else
             {
-                handler->PSendSysMessage(lineTemplate_s, "Macro Requiring Lua Unlock Detected", "No");
+                handler->PSendSysMessage(lineTemplate_s, "检测到需要 Lua 解锁的宏操作", "No");
             }
 
             float average = sAnticheatMgr->GetAverage(guid);
@@ -345,7 +345,7 @@ public:
     {
         if (!sConfigMgr->GetOption<bool>("Anticheat.Enabled", 0))
         {
-            handler->PSendSysMessage("The Anticheat System is disabled.");
+            handler->PSendSysMessage("反作弊系统已禁用.");
             return true;
         }
 
@@ -357,7 +357,7 @@ public:
     static bool HandleAntiCheatPurgeCommand(ChatHandler* handler)
     {
         sAnticheatMgr->AnticheatPurgeCommand(handler);
-        handler->PSendSysMessage("The Anticheat daily_players_reports has been purged.");
+        handler->PSendSysMessage("反作弊系统的每日玩家报告已清除.");
         return true;
     }
 };

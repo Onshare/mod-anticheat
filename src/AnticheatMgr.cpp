@@ -307,7 +307,7 @@ void AnticheatMgr::BuildAndSendReportToIngameGameMasters(Player* player, ReportT
     if (counter % GetAlertFrequencyConfigFromReportType(reportType) == 0)
     {
         const char* reportName = GetReportNameFromReportType(reportType);
-        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] Possible cheater! Report name: " + reportName);
+        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 可能是骗子! 报告人: " + reportName);
         if (counter >= GetMinimumReportInChatThresholdConfigFromReportType(reportType) && counter <= GetMaximumReportInChatThresholdConfigFromReportType(reportType))
         {
             uint32 latency = player->GetSession()->GetLatency();
@@ -454,20 +454,20 @@ void AnticheatMgr::SpeedHackDetection(Player* player, MovementInfo movementInfo)
         {
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Time Manipulation - Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊管理器：检测到时间操控作弊玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.WriteLog", true))
         {
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} Time Diff Corrected (Map: {}) (possible Out of Order Time Manipulation) - Flagged at: {}", player->GetName(), player->GetMapId(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊防范:: {} 时间差修正 (地图: {}) (可能的时间操控不当) - 位置标记: {}", player->GetName(), player->GetMapId(), goXYZ);
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
         {
-            SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] TIME MANIPULATION COUNTER MEASURE ALERT");
+            SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 时间操控防范警报");
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
         {
-            const char* str = "|cFFFFFC00 TIME MANIPULATION COUNTER MEASURE ALERT";
+            const char* str = "|cFFFFFC00 时间操控防范警报";
             sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
         }
         timeDiff = 1;
@@ -479,15 +479,15 @@ void AnticheatMgr::SpeedHackDetection(Player* player, MovementInfo movementInfo)
         if (sConfigMgr->GetOption<bool>("Anticheat.WriteLog", true))
         {
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} Time Diff Corrected (Map: {}) (possible Zero Time Manipulation) - Flagged at: {}", player->GetName(), player->GetMapId(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊防范:: {} 时间差修正 (地图: {}) (可能的零时间操控) - 位置标记: {}", player->GetName(), player->GetMapId(), goXYZ);
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
         {
-            SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] TIME MANIPULATION COUNTER MEASURE ALERT");
+            SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 时间操控防范警报");
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
         {
-            const char* str = "|cFFFFFC00 TIME MANIPULATION COUNTER MEASURE ALERT";
+            const char* str = "|cFFFFFC00 时间操控防范警报";
             sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
         }
         timeDiff = 1;
@@ -533,7 +533,7 @@ void AnticheatMgr::SpeedHackDetection(Player* player, MovementInfo movementInfo)
                 {
                     uint32 latency = player->GetSession()->GetLatency();
                     std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                    LOG_INFO("anticheat.module", "AnticheatMgr:: Speed-Hack (Speed Movement at {}% above allowed Server Set rate {}%.) detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", clientSpeedRate, speedRate, player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                    LOG_INFO("anticheat.module", "反作弊管理器：速度作弊（速度移动 {}% 超过服务器设置的允许速率 {}%.) 检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", clientSpeedRate, speedRate, player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
                 }
                 if (sConfigMgr->GetOption<bool>("Anticheat.CM.SPEEDHACK", true))
                 {
@@ -544,15 +544,15 @@ void AnticheatMgr::SpeedHackDetection(Player* player, MovementInfo movementInfo)
                     if (sConfigMgr->GetOption<bool>("Anticheat.CM.WriteLog", true))
                     {
                         std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                        LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} Speed Hack Countered and has been set to Server Rate - Flagged at: {}", player->GetName(), goXYZ);
+                        LOG_INFO("anticheat.module", "反作弊防范:: {} 速度作弊已被抵制并设置为服务器速率 - 位置标记: {}", player->GetName(), goXYZ);
                     }
                     if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
                     {
-                        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] SPEED COUNTER MEASURE ALERT");
+                        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 速度防范警报");
                     }
                     if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
                     {
-                        const char* str = "|cFFFFFC00 SPEED HACK COUNTER MEASURE ALERT";
+                        const char* str = "|cFFFFFC00 速度作弊防范警报";
                         sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
                     }
                     BuildReport(player, COUNTER_MEASURES_REPORT, movementInfo);
@@ -591,7 +591,7 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
     {
         uint32 latency = player->GetSession()->GetLatency();
         std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-        LOG_INFO("anticheat.module", "AnticheatMgr:: Fly-Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+        LOG_INFO("anticheat.module", "反作弊管理器：飞行作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
     }
 
     if (sConfigMgr->GetOption<bool>("Anticheat.CM.FLYHACK", true))
@@ -604,15 +604,15 @@ void AnticheatMgr::FlyHackDetection(Player* player, MovementInfo  movementInfo)
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.WriteLog", true))
         {
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} Fly Hack Countered and has Opcode set to SMSG_MOVE_UNSET_CAN_FLY - Flagged at: {}", player->GetName(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊防范:: {} 飞行作弊已被抵制，并已将操作码设置为 SMSG_MOVE_UNSET_CAN_FLY - 位置标记: {}", player->GetName(), goXYZ);
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
         {
-            SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] FLY HACK COUNTER MEASURE ALERT");
+            SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 飞行作弊防范警报");
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
         {
-            const char* str = "|cFFFFFC00 FLY HACK COUNTER MEASURE ALERT";
+            const char* str = "|cFFFFFC00 飞行作弊防范警报";
             sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
         }
         BuildReport(player, COUNTER_MEASURES_REPORT, movementInfo);
@@ -644,7 +644,7 @@ void AnticheatMgr::JumpHackDetection(Player* player, MovementInfo movementInfo, 
         {
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Jump-Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊管理器：跳跃作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.JUMPHACK", true))
         {
@@ -653,15 +653,15 @@ void AnticheatMgr::JumpHackDetection(Player* player, MovementInfo movementInfo, 
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.WriteLog", true))
             {
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} JUMP Hack Countered and has been set to fall - Flagged at: {}", player->GetName(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊防范:: {} 跳跃作弊已被抵制，并已设置为坠落 - 位置标记: {}", player->GetName(), goXYZ);
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
             {
-                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] JUMP HACK COUNTER MEASURE ALERT");
+                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 跳跃作弊防范警报");
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
             {
-                const char* str = "|cFFFFFC00 JUMP HACK COUNTER MEASURE ALERT";
+                const char* str = "|cFFFFFC00 跳跃作弊防范警报";
                 sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
             }
             BuildReport(player, COUNTER_MEASURES_REPORT, movementInfo);
@@ -705,7 +705,7 @@ void AnticheatMgr::JumpHackDetection(Player* player, MovementInfo movementInfo, 
             {
                 uint32 latency = player->GetSession()->GetLatency();
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "AnticheatMgr:: Stricter Check Jump-Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊管理器：更严格的检查跳跃作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ADVJUMPHACK", true))
             {
@@ -714,15 +714,15 @@ void AnticheatMgr::JumpHackDetection(Player* player, MovementInfo movementInfo, 
                 if (sConfigMgr->GetOption<bool>("Anticheat.CM.WriteLog", true))
                 {
                     std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                    LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} ADVANCE JUMP Hack Countered and has been set to fall - Flagged at: {}", player->GetName(), goXYZ);
+                    LOG_INFO("anticheat.module", "反作弊防范:: {} 高级跳跃作弊已被抵制，并已设置为坠落 - 位置标记: {}", player->GetName(), goXYZ);
                 }
                 if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
                 {
-                    SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] ADVANCE JUMP HACK COUNTER MEASURE ALERT");
+                    SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 高级跳跃作弊防范警报");
                 }
                 if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
                 {
-                    const char* str = "|cFFFFFC00 ADVANCE JUMP HACK COUNTER MEASURE ALERT";
+                    const char* str = "|cFFFFFC00 高级跳跃作弊防范警报";
                     sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
                 }
                 BuildReport(player, COUNTER_MEASURES_REPORT, movementInfo);
@@ -791,7 +791,7 @@ void AnticheatMgr::TeleportPlaneHackDetection(Player* player, MovementInfo movem
         {
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Teleport To Plane - Hack detected player {} ({})  - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊管理器：传送至平面作弊检测到玩家 {} ({})  - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
         }
 
         BuildReport(player, TELEPORT_PLANE_HACK_REPORT, movementInfo);
@@ -831,7 +831,7 @@ void AnticheatMgr::ClimbHackDetection(Player* player, MovementInfo movementInfo,
             {
                 uint32 latency = player->GetSession()->GetLatency();
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "AnticheatMgr:: Climb-Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊管理器：攀爬作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
             }
 
             BuildReport(player, CLIMB_HACK_REPORT, movementInfo);
@@ -909,7 +909,7 @@ void AnticheatMgr::TeleportHackDetection(Player* player, MovementInfo movementIn
         {
             Player* opponent = player->duel->Opponent;
 
-            SendMiddleScreenGMMessage("|cFFFFFC00[DUEL ALERT |cFF60FF00" + player->GetName() + "|cFF00FFFF] Possible Teleport Hack Detected! While Dueling [|cFF60FF00" + opponent->GetName() + "|cFF00FFFF]");
+            SendMiddleScreenGMMessage("决斗警报 |cFF60FF00" + player->GetName() + "|cFF00FFFF] 可能使用传送作弊！进行决斗时检测到，决斗目标 [|cFF60FF00" + opponent->GetName() + "|cFF00FFFF]");
 
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
@@ -919,8 +919,8 @@ void AnticheatMgr::TeleportHackDetection(Player* player, MovementInfo movementIn
 
             if (sConfigMgr->GetOption<bool>("Anticheat.WriteLog", true))
             {
-                LOG_INFO("anticheat.module", "AnticheatMgr:: DUEL ALERT Teleport-Hack detected player {} ({}) while dueling {} - Latency: {} ms - IP: {} - GPS Diff X: {} Y: {} Z: {} - Cheat Flagged At: {} - Cheat Flag At: {}", player->GetName(), player->GetGUID().ToString(), opponent->GetName(), latency, player->GetSession()->GetRemoteAddress().c_str(), xDiff, yDiff, zDiff, goXYZ);
-                LOG_INFO("anticheat.module", "AnticheatMgr:: DUEL ALERT Teleport-Hack detected player {} ({}) while dueling {} - Latency: {} ms - IP: {} - GPS Diff X: {} Y: {} Z: {} - Cheat Flagged At: {} - Cheat Flag At: {}", opponent->GetName(), opponent->GetGUID().ToString(), player->GetName(), latency2, opponent->GetSession()->GetRemoteAddress().c_str(), xDiff, yDiff, zDiff, goXYZ2);
+                LOG_INFO("anticheat.module", "反作弊管理器：决斗警报，检测到玩家 {} ({}) 在与 {}决斗时使用传送作弊 - 延迟: {} ms - IP: {} - GPS 差异 X: {} Y: {} Z: {} - 作弊位置标记: {} - 作弊标记:{}", player->GetName(), player->GetGUID().ToString(), opponent->GetName(), latency, player->GetSession()->GetRemoteAddress().c_str(), xDiff, yDiff, zDiff, goXYZ);
+                LOG_INFO("anticheat.module", "反作弊管理器：决斗警报，检测到玩家 {} ({}) 在与 {} 决斗时使用传送作弊 - 延迟: {} ms - IP: {} - GPS 差异 X: {} Y: {} Z: {} - 作弊位置标记: {} - 作弊标记:{}", opponent->GetName(), opponent->GetGUID().ToString(), player->GetName(), latency2, opponent->GetSession()->GetRemoteAddress().c_str(), xDiff, yDiff, zDiff, goXYZ2);
             }
             BuildReport(player, TELEPORT_HACK_REPORT, movementInfo);
             BuildReport(opponent, TELEPORT_HACK_REPORT, movementInfo);
@@ -935,22 +935,22 @@ void AnticheatMgr::TeleportHackDetection(Player* player, MovementInfo movementIn
         {
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(newX) + " " + std::to_string(newY) + " " + std::to_string(newZ + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Teleport-Hack detected player {} ({}) - Latency: {} ms - IP: {} - GPS Diff X: {} Y: {} Z: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), xDiff, yDiff, zDiff, goXYZ);
+            LOG_INFO("anticheat.module", "反作弊管理器：检测到玩家 {} ({})使用传送作弊 - 延迟: {} ms - IP: {} - GPS 差异 X: {} Y: {} Z: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), xDiff, yDiff, zDiff, goXYZ);
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.Teleport", true))
         {
             if (sConfigMgr->GetOption<bool>("Anticheat.WriteLog", true))
             {
                 std::string LastgoXYZ = ".go xyz " + std::to_string(lastX) + " " + std::to_string(lastY) + " " + std::to_string(lastZ + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} TELEPORT HACK REVERTED PLAYER BACK TO {}", player->GetName(), LastgoXYZ);
+                LOG_INFO("anticheat.module", "反作弊防护:: {} 传送作弊已还原玩家至 {}", player->GetName(), LastgoXYZ);
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
             {
-                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] TELEPORT HACK COUNTER MEASURE ALERT");
+                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 传送作弊防范警报");
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
             {
-                const char* str = "|cFFFFFC00 TELEPORT COUNTER MEASURE ALERT";
+                const char* str = "|cFFFFFC00 传送作弊防范警报";
                 sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
             }
             player->TeleportTo(player->GetMapId(), lastX, lastY, lastZ, player->GetOrientation());
@@ -995,7 +995,7 @@ void AnticheatMgr::IgnoreControlHackDetection(Player* player, MovementInfo movem
             if (sConfigMgr->GetOption<bool>("Anticheat.WriteLog", true))
             {
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "AnticheatMgr:: Ignore Control - Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊管理器：忽略控制作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
             }
             BuildReport(player, IGNORE_CONTROL_REPORT, movementInfo);
         }
@@ -1019,7 +1019,7 @@ void AnticheatMgr::GravityHackDetection(Player* player, MovementInfo movementInf
             {
                 uint32 latency = player->GetSession()->GetLatency();
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "AnticheatMgr:: Gravity-Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊管理器：重力作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
             }
             BuildReport(player, GRAVITY_HACK_REPORT, movementInfo);
         }
@@ -1046,7 +1046,7 @@ void AnticheatMgr::WalkOnWaterHackDetection(Player* player, MovementInfo movemen
             {
                 uint32 latency = player->GetSession()->GetLatency();
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "AnticheatMgr:: Walk on Water - Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊管理器：水上行走作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
             }
             BuildReport(player, WALK_WATER_HACK_REPORT, movementInfo);
         }
@@ -1077,7 +1077,7 @@ void AnticheatMgr::WalkOnWaterHackDetection(Player* player, MovementInfo movemen
     {
         uint32 latency = player->GetSession()->GetLatency();
         std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-        LOG_INFO("anticheat.module", "AnticheatMgr:: Walk on Water - Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+        LOG_INFO("anticheat.module", "反作弊管理器：水上行走作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
     }
     BuildReport(player, WALK_WATER_HACK_REPORT, movementInfo);
 }
@@ -1137,7 +1137,7 @@ void AnticheatMgr::ZAxisHackDetection(Player* player, MovementInfo movementInfo)
         {
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Ignore Zaxis Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊管理器：忽略 Z 坐标作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
         }
         if (sConfigMgr->GetOption<bool>("Anticheat.CM.IGNOREZ", true))
         {
@@ -1146,15 +1146,15 @@ void AnticheatMgr::ZAxisHackDetection(Player* player, MovementInfo movementInfo)
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.WriteLog", true))
             {
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: {} IGNORE-Z Hack Countered and has been set to fall - Flagged at: {}", player->GetName(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊防范:: {} 忽略 Z 坐标作弊已被抵制，并已设置为坠落 - 位置标记: {}", player->GetName(), goXYZ);
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
             {
-                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] IGNORE-Z HACK COUNTER MEASURE ALERT");
+                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] XXX 忽略-Z坐标 传送作弊防范警报");
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
             {
-                const char* str = "|cFFFFFC00 IGNORE-Z HACK COUNTER MEASURE ALERT";
+                const char* str = "|cFFFFFC00 忽略-Z坐标 传送作弊防范警报";
                 sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
             }
             BuildReport(player, COUNTER_MEASURES_REPORT, movementInfo);
@@ -1195,7 +1195,7 @@ void AnticheatMgr::AntiSwimHackDetection(Player* player, MovementInfo movementIn
         {
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Anti-Swim-Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊管理器：防游泳作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
         }
         BuildReport(player, ANTISWIM_HACK_REPORT, movementInfo);
     }
@@ -1220,7 +1220,7 @@ void AnticheatMgr::AntiKnockBackHackDetection(Player* player, MovementInfo movem
         {
             uint32 latency = player->GetSession()->GetLatency();
             std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Anti-Knock Back - Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+            LOG_INFO("anticheat.module", "反作弊管理器：检测到玩家 {} ({}) 使用反击退作弊 - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
         }
         BuildReport(player, ANTIKNOCK_BACK_HACK_REPORT, movementInfo);
     }
@@ -1266,7 +1266,7 @@ void AnticheatMgr::NoFallDamageDetection(Player* player, MovementInfo movementIn
                 {
                     uint32 latency = player->GetSession()->GetLatency();
                     std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                    LOG_INFO("anticheat.module", "AnticheatMgr:: No Fall Damage - Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                    LOG_INFO("anticheat.module", "反作弊管理器：无坠落伤害作弊 - 检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
                 }
                 BuildReport(player, NO_FALL_DAMAGE_HACK_REPORT, movementInfo);
             }
@@ -1281,7 +1281,7 @@ void AnticheatMgr::BGreport(Player* player, MovementInfo movementInfo)
     uint32 alertFrequency = GetAlertFrequencyConfigFromReportType(TELEPORT_HACK_REPORT);
     if (counter % alertFrequency == 0)
     {
-        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] Player Outside of Starting SPOT before BG has started!");
+        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 玩家在战场开始前已经离开起始位置!");
 
         // need better way to limit chat spam
         if (counter >= GetMinimumReportInChatThresholdConfigFromReportType(TELEPORT_HACK_REPORT) && counter <= GetMaximumReportInChatThresholdConfigFromReportType(TELEPORT_HACK_REPORT))
@@ -1295,7 +1295,7 @@ void AnticheatMgr::BGreport(Player* player, MovementInfo movementInfo)
     {
         uint32 latency = player->GetSession()->GetLatency();
         std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-        LOG_INFO("anticheat.module", "AnticheatMgr:: BG Start Spot Exploit-Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+        LOG_INFO("anticheat.module", "反作弊管理器：检测到玩家 {} ({})利用战场开始点漏洞作弊 - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
     }
 
     BuildReport(player, TELEPORT_HACK_REPORT, movementInfo);    // Synful-Syn: This needs a different report type.
@@ -1318,15 +1318,15 @@ void AnticheatMgr::CheckStartPositions(Player* player, MovementInfo movementInfo
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.WriteLog", true))
             {
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "ANTICHEAT COUNTER MEASURE:: Sending {} back to start location (BG Map: {}) (possible exploit) - Flagged at: {}", player->GetName(), player->GetMapId(), goXYZ);
+                LOG_INFO("anticheat.module", "反作弊防范：将 {} 送回起始位置（战场地图: {}) (可能的漏洞利用) - 位置标记: {}", player->GetName(), player->GetMapId(), goXYZ);
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTSCREEN", true))
             {
-                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] BG START SPOT COUNTER MEASURE ALERT");
+                SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF]  战场开始位置作弊防范警报");
             }
             if (sConfigMgr->GetOption<bool>("Anticheat.CM.ALERTCHAT", true))
             {
-                const char* str = "|cFFFFFC00 BG START SPOT COUNTER MEASURE ALERT";
+                const char* str = "|cFFFFFC00  战场开始位置作弊防范警报";
                 sWorld->SendGMText(LANG_ANTICHEAT_COUNTERMEASURE, str, player->GetName().c_str(), player->GetName().c_str());
             }
             BuildReport(player, COUNTER_MEASURES_REPORT, movementInfo);
@@ -1524,7 +1524,7 @@ void AnticheatMgr::DoActions(Player* player)
             {
                 uint32 latency = player->GetSession()->GetLatency();
                 std::string goXYZ = ".go xyz " + std::to_string(player->GetPositionX()) + " " + std::to_string(player->GetPositionY()) + " " + std::to_string(player->GetPositionZ() + 1.0f) + " " + std::to_string(player->GetMap()->GetId()) + " " + std::to_string(player->GetOrientation());
-                LOG_INFO("anticheat.module", "Opcode Manipulation Hack detected player {} ({}) - Latency: {} ms - IP: {} - Cheat Flagged At: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
+                LOG_INFO("anticheat.module", "操作码操控作弊检测到玩家 {} ({}) - 延迟: {} ms - IP: {} - 作弊位置标记: {}", player->GetName(), player->GetGUID().ToString(), latency, player->GetSession()->GetRemoteAddress().c_str(), goXYZ);
                 order.counter = 0;
             }
             BuildReport(player, OP_ACK_HACK_REPORT, std::nullopt);
@@ -1661,10 +1661,10 @@ void AnticheatMgr::BuildReport(Player* player, ReportTypes reportType, Optional<
     {
         if (sConfigMgr->GetOption<bool>("Anticheat.WriteLog", true))
         {
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Reports reached assigned threshhold and counteracted by kicking player {} ({})", player->GetName(), player->GetGUID().ToString());
+            LOG_INFO("anticheat.module", "反作弊管理器:: 报告显示玩家行为触发了预设的阈值，因此采取了相应的措施，将玩家 {} ({})踢出游戏", player->GetName(), player->GetGUID().ToString());
         }
 
-        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] Auto Kicked for Reaching Cheat Threshhold!");
+        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 由于达到作弊阈值而自动踢出！");
 
         player->GetSession()->KickPlayer(true);
         if (sConfigMgr->GetOption<bool>("Anticheat.AnnounceKick", true))
@@ -1673,9 +1673,9 @@ void AnticheatMgr::BuildReport(Player* player, ReportTypes reportType, Optional<
             std::string tag_colour = "7bbef7";
             std::string plr_colour = "ff0000";
             std::ostringstream stream;
-            stream << "|CFF" << plr_colour << "[AntiCheat]|r|CFF" << tag_colour <<
-                " Player |r|cff" << plr_colour << plr << "|r|cff" << tag_colour <<
-                " has been kicked by the Anticheat Module.|r";
+            stream << "|CFF" << plr_colour << "[反作弊]|r|CFF" << tag_colour <<
+                " 玩家 |r|cff" << plr_colour << plr << "|r|cff" << tag_colour <<
+                " 已被反作弊模块踢出游戏.|r";
             sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
         }
     }
@@ -1684,14 +1684,14 @@ void AnticheatMgr::BuildReport(Player* player, ReportTypes reportType, Optional<
     {
         if (sConfigMgr->GetOption<bool>("Anticheat.WriteLog", true))
         {
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Reports reached assigned threshhold and counteracted by banning player {} ({})", player->GetName(), player->GetGUID().ToString());
+            LOG_INFO("anticheat.module", "反作弊管理器:: 报告达到了设定的阈值，并已通过封禁玩家 {} ({})来应对措施", player->GetName(), player->GetGUID().ToString());
         }
 
-        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] Auto Banned Account for Reaching Cheat Threshhold!");
+        SendMiddleScreenGMMessage("由于达到作弊阈值， |cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 账户已自动被封禁!");
 
         std::string accountName;
         AccountMgr::GetName(player->GetSession()->GetAccountId(), accountName);
-        sBan->BanAccount(accountName, "0s", "Anticheat module Auto Banned Account for Reach Cheat Threshhold", "Server");
+        sBan->BanAccount(accountName, "0s", "反作弊模块由于达到作弊阈值，自动封禁了账户", "Server");
 
         if (sConfigMgr->GetOption<bool>("Anticheat.AnnounceBan", true))
         {
@@ -1699,9 +1699,9 @@ void AnticheatMgr::BuildReport(Player* player, ReportTypes reportType, Optional<
             std::string tag_colour = "7bbef7";
             std::string plr_colour = "ff0000";
             std::ostringstream stream;
-            stream << "|CFF" << plr_colour << "[AntiCheat]|r|CFF" << tag_colour <<
-                " Player |r|cff" << plr_colour << plr << "|r|cff" << tag_colour <<
-                " has been Banned by the Anticheat Module.|r";
+            stream << "|CFF" << plr_colour << "[反作弊]|r|CFF" << tag_colour <<
+                " 玩家 |r|cff" << plr_colour << plr << "|r|cff" << tag_colour <<
+                " 已被反作弊模块封禁。|r";
             sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
         }
     }
@@ -1710,10 +1710,10 @@ void AnticheatMgr::BuildReport(Player* player, ReportTypes reportType, Optional<
     {
         if (sConfigMgr->GetOption<bool>("Anticheat.WriteLog", true))
         {
-            LOG_INFO("anticheat.module", "AnticheatMgr:: Reports reached assigned threshhold and counteracted by jailing player {} ({})", player->GetName(), player->GetGUID().ToString());
+            LOG_INFO("anticheat.module", "反作弊管理器:: 报告达到了所设定的阈值，并已通过将玩家 {} ({})封禁来应对措施", player->GetName(), player->GetGUID().ToString());
         }
 
-        SendMiddleScreenGMMessage("|cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] Auto Jailed Account for Reaching Cheat Threshhold!");
+        SendMiddleScreenGMMessage("由于达到作弊阈值， |cFF00FFFF[|cFF60FF00" + player->GetName() + "|cFF00FFFF] 账户已自动被禁用!");
 
         // GM Jail Location is uncommit and used as default for the jailing. Feel free to commit it out with double forward slashes (//) and uncommit,
         // removing the double forward slashes (//) if you wish to use the other locations.
@@ -1744,9 +1744,9 @@ void AnticheatMgr::BuildReport(Player* player, ReportTypes reportType, Optional<
             std::string tag_colour = "7bbef7";
             std::string plr_colour = "ff0000";
             std::ostringstream stream;
-            stream << "|CFF" << plr_colour << "[AntiCheat]|r|CFF" << tag_colour <<
-                " Player |r|cff" << plr_colour << plr << "|r|cff" << tag_colour <<
-                " has been Jailed by the Anticheat Module.|r";
+            stream << "|CFF" << plr_colour << "[反作弊]|r|CFF" << tag_colour <<
+                " 玩家 |r|cff" << plr_colour << plr << "|r|cff" << tag_colour <<
+                " 已被反作弊模块限制。|r";
             sWorld->SendServerMessage(SERVER_MSG_STRING, stream.str().c_str());
         }
     }
@@ -1767,7 +1767,7 @@ void AnticheatMgr::AnticheatGlobalCommand(ChatHandler* handler)
     if (QueryResult resultDB = CharacterDatabase.Query("SELECT `guid`, `average`, `total_reports` FROM `players_reports_status` WHERE `total_reports` != 0 ORDER BY `total_reports` DESC LIMIT 3;"))
     {
         handler->PSendSysMessage("=============================");
-        handler->PSendSysMessage("Players with the most reports:");
+        handler->PSendSysMessage("拥有最多举报的玩家:");
         do
         {
             Field* fieldsDB = resultDB->Fetch();
@@ -1777,14 +1777,14 @@ void AnticheatMgr::AnticheatGlobalCommand(ChatHandler* handler)
             uint32 total_reports = fieldsDB[2].Get<uint32>();
 
             if (Player* player = ObjectAccessor::FindConnectedPlayer(guid))
-                handler->PSendSysMessage("Player: %s Total Reports: %u Average: %f", player->GetName().c_str(), total_reports, average);
+                handler->PSendSysMessage("玩家: %s 总举报数: %u 平均值: %f", player->GetName().c_str(), total_reports, average);
 
         } while (resultDB->NextRow());
     }
     else
     {
         // this should never happen
-        handler->PSendSysMessage("No players found.");
+        handler->PSendSysMessage("没有玩家被找到.");
         return;
     }
 }
