@@ -246,8 +246,8 @@ Anticheat.CM.FLYHACK = 1
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.JUMPHACK = 1
-Anticheat.CM.ADVJUMPHACK = 1
+Anticheat.CM.JUMPHACK = 0
+Anticheat.CM.ADVJUMPHACK = 0
 
 #
 #     Anticheat.CM.IGNOREZ
@@ -258,7 +258,7 @@ Anticheat.CM.ADVJUMPHACK = 1
 #                   1 - (Enabled)
 #
 
-Anticheat.CM.IGNOREZ = 1
+Anticheat.CM.IGNOREZ = 0
 
 #
 #     Anticheat.CM.SPEEDHACK
